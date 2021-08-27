@@ -169,7 +169,10 @@ class WebsitePrinter {
             this.tree = o.tree;
             //深度遍历整个Tree,恢复文件
             let stack = [this.tree];
-            let j = 0;
+            let map = {};
+            for (let i = 0; i < this.stack.length; i++) {
+                map[this.stack[i][0]] = this.stack[i];
+            }
             while (stack.length > 0) {
                 let node = stack.shift();
                 if (node.children.length > 0) {
@@ -178,7 +181,11 @@ class WebsitePrinter {
                     }
                 }
                 if (!this.visited_urls.hasOwnProperty(node.url)) {
-                    this.stack[j++][3] = node;
+                    if (map.hasOwnProperty(node.url)) {
+                        map[node.url][3] = node;
+                    } else {
+                        console.log("未找到url", node.url);
+                    }
                 }
             }
         }
@@ -271,7 +278,7 @@ class WebsitePrinter {
         } while (tmp > 0)
 
         let str = '';
-        for (let i = (N - n); i < N; i++) {
+        for (let i = n; i < N; i++) {
             str += '0';
         }
         return str + digit;
