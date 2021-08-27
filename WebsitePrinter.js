@@ -208,20 +208,24 @@ class WebsitePrinter {
             if (url == '') {
                 continue;
             }
-            let elementId = url.substring(url.lastIndexOf('/') + 1, url.length);
-            if (!this.hasDirtyElement) {
-                elementId = '';
-            }
             let regex = /\//g; //解决特殊字符问题
             let chapter_name = chapters[i][1].replace(regex, "_");
             let current_chapter = this.padZero((i + 1), chapter_radix);
-            await this.printPage(current_chapter, browser, url, chapter_name);
-            await this.sleep(1000);
+            let result = await this.printPage(current_chapter, browser, url, chapter_name);
+            if (result == 0) {
+                await this.sleep(1000);
+            }
         }
     }
     // 打印单个网页PDF
     async printPage(index, browser, url, filename) {
-        console.log(index + ". 打印 " + filename + ".pdf");
+        if (fs.existsSync("./temp/" + index + ". " + filename + '.pdf')) {
+            console.log(index + ". 打印 " + filename + ".pdf[已缓存]");
+            return 1;
+        } else {
+            console.log(index + ". 打印 " + filename + ".pdf");
+        }
+
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle2' });
         await page.emulateMediaType('screen');
@@ -241,6 +245,7 @@ class WebsitePrinter {
             format: 'A4',
             printBackground: true,
         });
+        return 0;
     }
     // 合并PDF
     async mergePartPdfFiles(data, fileName) {
