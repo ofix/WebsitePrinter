@@ -187,7 +187,7 @@ class WebsitePrinter {
             }, this.dirty_global_nodes);
         }
         await page.pdf({
-            path: "./temp/" + filename + '.pdf',
+            path: "./temp/" + index + ". " + filename + '.pdf',
             format: 'A4',
             printBackground: true,
         });
