@@ -19,6 +19,7 @@ class WebsitePrinter {
         this.tree = new PageNode(null, this.pdf_name, this.website_root, 0); //层级一
         this.visited_urls = []; // 已经访问过的URL集合
         this.pdf_urls = []; // 需要打印成PDF的URL集合
+        this.stack = [];
         ////////////////////////////////////////////
         this.debug = true;
         this.hasDirtyElement = true;
@@ -92,6 +93,7 @@ class WebsitePrinter {
             let data = fs.readFileSync(this.cacheFile, 'utf-8');
             this.pdf_urls = JSON.parse(data);
         } else {
+            this.recoverFromCrash();
             await this.build();
             return;
         }
@@ -106,39 +108,66 @@ class WebsitePrinter {
             await this.mergePartPdfFiles(this.pdf_urls, this.pdfName);
             console.log("完成！ ^_^");
         });
-
     }
 
     async build() {
         // 深度遍历
-        let count = 0;
-        let level = 0;
-        let stack = [[this.website_entry, level, this.pdf_name, this.tree]];
-        while (stack.length) {
-            let page = stack.shift();
-            let url = page[0];
-            let level = page[1];
-            let name = page[2];
-            let parent_node = page[3];
-            // 访问过的URL不需要再次访问
-            if (this.visited_urls.hasOwnProperty(url)) {
-                continue;
+        try {
+            let count = 0;
+            let level = 0;
+            this.stack = [[this.website_entry, level, this.pdf_name, this.tree]];
+            while (this.stack.length > 0) {
+                let page = this.stack.shift();
+                let url = page[0];
+                let level = page[1];
+                let name = page[2];
+                let parent_node = page[3];
+                // 访问过的URL不需要再次访问
+                if (this.visited_urls.hasOwnProperty(url)) {
+                    continue;
+                }
+                // 如果URL层级深度超过4，忽略
+                if (level > 4) {
+                    continue;
+                }
+                let data = await this.visitUrl(url, count + 1); // 访问单个页面
+                this.visited_urls[url] = name;
+                this.pdf_urls.push(url);
+                this.parseUrlsInPage(data, level, parent_node, url); // 解析页面中的url
+                let next_urls = parent_node.getChildren();
+                for (let i = 0; i < next_urls.length; i++) {
+                    this.stack.push([next_urls[i].url, next_urls[i].level, next_urls[i].name, next_urls[i]]);
+                }
+                count++;
             }
-            // 如果URL层级深度超过4，忽略
-            if (level > 4) {
-                continue;
-            }
-            let data = await this.visitUrl(url, count + 1); // 访问单个页面
-            this.visited_urls[url] = name;
-            this.pdf_urls.push(url);
-            this.parseUrlsInPage(data, level, parent_node, url); // 解析页面中的url
-            let next_urls = parent_node.getChildren();
-            for (let i = 0; i < next_urls.length; i++) {
-                stack.push([next_urls[i].url, next_urls[i].level, next_urls[i].name, next_urls[i]]);
-            }
-            count++;
+            this.saveCacheFile(this.visited_urls);
         }
-        this.saveCacheFile(this.visited_urls);
+        catch (e) {
+            console.log(e);
+            let o = {
+                stack: [],
+                tree: [],
+                visited_urls: this.visited_urls,
+                pdf_urls: this.pdf_urls
+            };
+            for (let i = 0; i < this.stack.length; i++) { // 生成dump文件
+                o.stack.push([this.stack[i][0], this.stack[i][1], this.stack[2]]);
+            }
+            o.tree = this.tree;
+            let data = JSON.stringify(o, null, 4);
+            fs.writeFileSync("./crash.json", data);
+        }
+    }
+
+    recoverFromCrash() {
+        if (fs.existsSync("./crash.json")) {
+            let data = fs.readFileSync("./crash.json", 'utf-8');
+            let o = JSON.parse(data);
+            this.visited_urls = o.visited_urls;
+            this.pdf_urls = o.pdf_urls;
+            this.stack = o.stack;
+            this.tree = o.tree;
+        }
     }
 
     saveCacheFile(urls) {
