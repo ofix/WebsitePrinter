@@ -10,32 +10,21 @@ const { PageNode } = require('./pageNode');
 const { treeify } = require('./treeify');
 
 class WebsitePrinter {
-    constructor(website_root, pdf_name) {
-        this.website_root = website_root; //网站根目录
+    constructor(website_entry, pdf_name, website_base) {
+        this.website_entry = website_entry; //网站根目录
+        this.website_base = website_base;
+        this.base_len = this.website_base.length;
         this.pdf_name = pdf_name; // PDF名称
         this.cacheFile = pdf_name + '.json';
         this.tree = new PageNode(null, this.pdf_name, this.website_root, 0); //层级一
-        this.level_links = [];
-        ///////////////////////////////////////
-        this.chapterEntries = []; //目录名和地址
-        this.chapterCount = 0;
-        this.chapterEntriesFlat = []; //没有递归的数组
-        this.css_container = '';
-        this.css_level_one = '';
-        this.css_level_two = "";
+        this.visited_urls = []; // 已经访问过的URL集合
+        this.pdf_urls = []; // 需要打印成PDF的URL集合
+        ////////////////////////////////////////////
         this.debug = true;
         this.hasDirtyElement = true;
         this.visible_node = "";
         this.invisible_node_children = [];
         this.dirty_global_nodes = [];
-    }
-    setEntryCss(css_container, css_level_one, css_level_two) {
-        this.css_container = css_container;
-        this.css_level_one = css_level_one;
-        this.css_level_two = css_level_two;
-    }
-    setLevelLinks(level_links) {
-        this.level_links = level_links;
     }
     setVisibleNode(visible_node) {
         this.visible_node = visible_node;
@@ -46,31 +35,10 @@ class WebsitePrinter {
     setDirtyGlobalNodes(dirty_global_nodes) {
         this.dirty_global_nodes = dirty_global_nodes;
     }
-    setNoDirtyElement() {
-        this.hasDirtyElement = false;
-    }
-    async build() {
-        // 深度遍历
-        let count = 0;
-        let stack = [[this.website_root, 0, this.tree]];
-        while (stack.length) {
-            let page = stack.shift();
-            let url = page[0];
-            let level = page[1];
-            let parent = page[2];
-            let content = await this.visiteUrl(url);        // 下载单个页面
-            let x = this.parseLinksInPage(content, level, parent);  // 解析页面中的url
-            count++;
-            if (count >= 1) {
-                let tree = new treeify();
-                console.log(tree.asTree(tree, true));
-                break;
-            }
-        }
-    }
     // 访问单个页面
-    async visiteUrl(url) {
+    async visitUrl(url, count) {
         return new Promise(function (resolve, reject) {
+            console.log(count + " visit: " + url);
             const req = https.get(url, (res) => {
                 let html = [];
                 let size = 0;
@@ -90,78 +58,103 @@ class WebsitePrinter {
         });
     }
     // 提取单个页面的URL
-    parseLinksInPage(data, level, parent_tree_node) {
+    parseUrlsInPage(data, level, parent_node, parent_url) {
         let $ = cheerio.load(data);
-        let $container = $(this.level_links[level].container);
-        if (this.level_links[level].not) {
-            $container = $container.not(this.level_links[level].not);
-        }
-        $container.each((index, item) => {
+        let that = this;
+        $("body").each((index, item) => {
             let $a = $(item).find('a');
             $a.each((sub_index, url) => {
-                let $url = $(url);
-                let href = $url.attr('href');
-                let name = $url.text();
-                let node = new PageNode(parent_tree_node, name, href, level + 1);
-                console.log(href,"    |    ",name);
-                parent_tree_node.addChild(node);
+                let $url = $(url); //只查找当前页面的下一级目录
+                let child_url = that.website_base + $url.attr('href');
+                if (that.isChildUrl(parent_url, child_url)) {
+                    let name = $url.text();
+                    let node = new PageNode(name, child_url, level + 1);
+                    parent_node.addChild(node);
+                }
             });
         });
     }
-    async run2() {
+    // 判断URl是否是父子关系
+    isChildUrl(parent_url, child_url) {
+        if (child_url.indexOf(parent_url) == -1) {
+            return false;
+        }
+        let tail = child_url.substr(parent_url.length + 1);
+        let parts = tail.split('/');
+        if ((parts.length) > 1 || (parts[0] == '') || parts[0].substr(0, 1) == '#') {
+            return false;
+        }
+        return true;
+    }
+
+    async run() {
         if (fs.existsSync(this.cacheFile)) {
             let data = fs.readFileSync(this.cacheFile, 'utf-8');
-            this.chapterEntries = JSON.parse(data);
-            await this.onFinishPdfEntry(null, this);
+            this.pdf_urls = JSON.parse(data);
         } else {
-            await this.visitEntry(this.onFinishPdfEntry);
-            if (this.debug) {
-                return;
-            }
+            await this.build();
+            return;
         }
         let launchOptions = {
             executablePath: chromePath,
             devTools: true
         };
         puppeteer.launch(launchOptions).then(async browser => {
-            await this.printChapters(browser, this.chapterEntriesFlat);
+            await this.printChapters(browser, this.pdf_urls);
             await browser.close();
         }).then(async () => {
-            await this.mergePartPdfFiles(this.chapterEntriesFlat, this.pdfName);
+            await this.mergePartPdfFiles(this.pdf_urls, this.pdfName);
             console.log("完成！ ^_^");
         });
 
     }
-    sleep(time = 0) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve();
-            }, time);
-        })
-    }
 
-    arrayRecursiveToFlat(arr) {
-        for (let i = 0; i < arr.length; i++) {
-            this.chapterEntriesFlat.push(arr[i]);
-            if (arr[i].children.length > 0) {
-                this.arrayRecursiveToFlat(arr[i].children);
+    async build() {
+        // 深度遍历
+        let count = 0;
+        let level = 0;
+        let stack = [[this.website_entry, level, this.pdf_name, this.tree]];
+        while (stack.length) {
+            let page = stack.shift();
+            let url = page[0];
+            let level = page[1];
+            let name = page[2];
+            let parent_node = page[3];
+            // 访问过的URL不需要再次访问
+            if (this.visited_urls.hasOwnProperty(url)) {
+                continue;
             }
+            // 如果URL层级深度超过4，忽略
+            if (level > 4) {
+                continue;
+            }
+            let data = await this.visitUrl(url, count + 1); // 访问单个页面
+            this.visited_urls[url] = name;
+            this.pdf_urls.push(url);
+            this.parseUrlsInPage(data, level, parent_node, url); // 解析页面中的url
+            let next_urls = parent_node.getChildren();
+            for (let i = 0; i < next_urls.length; i++) {
+                stack.push([next_urls[i].url, next_urls[i].level, next_urls[i].name, next_urls[i]]);
+            }
+            count++;
         }
+        this.saveCacheFile(this.visited_urls);
     }
 
-    async onFinishPdfEntry(result, that) {
-        if (typeof result === 'string') {
-            that.parsePdfEntry(result, that);
-            that.saveCacheFile();
+    saveCacheFile(urls) {
+        let print_urls = [];
+        for (let key in urls) {
+            print_urls.push([key, urls[key]]); // url,name
         }
-        that.chapterCount = that.getPageCount(that.chapterEntries);
-        that.arrayRecursiveToFlat(that.chapterEntries);
-        console.log("\n文章总篇数: ", that.chapterCount, "\n");
+        let data = JSON.stringify(print_urls, null, 4);
+        fs.writeFileSync(this.cacheFile, data);
     }
+
     async printChapters(browser, chapters) {
         let chapter_length = chapters.length;
+        let chapter_radix = this.radix(chapter_length);
         for (let i = 0; i < chapter_length; i++) {
-            let url = chapters[i].href;
+            let url = chapters[i][0];
             if (url == '') {
                 continue;
             }
@@ -170,49 +163,20 @@ class WebsitePrinter {
                 elementId = '';
             }
             let regex = /\//g; //解决特殊字符问题
-            let chapter_name = chapters[i].name.replace(regex, "_");
-            let current_chapter = this.getPrintChapter((i + 1), chapter_length);
+            let chapter_name = chapters[i][1].replace(regex, "_");
+            let current_chapter = this.padZero((i + 1), chapter_radix);
             await this.printPage(current_chapter, browser, url, chapter_name);
             await this.sleep(1000);
         }
     }
-    getPrintChapter(i, chapter_count) {
-        if (chapter_count >= 100) {
-            if (i < 10) {
-                return '00' + i;
-            } else if (i >= 10 && i <= 99) {
-                return '0' + i;
-            } else {
-                return i;
-            }
-        } else if (chapter_count >= 10 && chapter_count <= 99) {
-            if (i < 10) {
-                return '0' + i;
-            } else {
-                return i;
-            }
-        }
-    }
+    // 打印单个网页PDF
     async printPage(index, browser, url, filename) {
         console.log(index + ". 打印 " + filename + ".pdf");
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: 'networkidle2' });
         await page.emulateMediaType('screen');
         if (this.hasDirtyElement) {
-            await page.evaluate((visible_node, invisible_node_children, dirty_global_nodes) => {
-                // console.log("REMOVE DIRTY ELEMENTS");
-                // console.log("VISIBLE_NODE ", visible_node);
-                // console.log("INVISIBLE_NODE_CHILDREN ", invisible_node_children);
-                const elements = document.querySelector('body').children;
-                let isId = visible_node.substr(0, 1) == '#' ? true : false;
-                let visible_node_id = visible_node.substring(1);
-                for (let i = 0; i < elements.length; i++) {
-                    if (isId) {
-                        if (elements[i].id != visible_node_id) {
-                            elements[i].style.display = 'none';
-                        }
-                    }
-                }
+            await page.evaluate((dirty_global_nodes) => {
                 // 移除全局的Dirty元素
                 for (let i = 0; i < dirty_global_nodes.length; i++) {
                     let nodes = document.querySelectorAll(dirty_global_nodes[i]);
@@ -220,7 +184,7 @@ class WebsitePrinter {
                         nodes[j].style.display = 'none';
                     }
                 }
-            }, this.visible_node, this.invisible_node_children, this.dirty_global_nodes);
+            }, this.dirty_global_nodes);
         }
         await page.pdf({
             path: "./temp/" + filename + '.pdf',
@@ -228,96 +192,54 @@ class WebsitePrinter {
             printBackground: true,
         });
     }
-
+    // 合并PDF
     async mergePartPdfFiles(data, fileName) {
         console.log("\n合并 " + fileName + ".pdf");
         var merger = new PDFMerger();
         for (let i = 0; i < data.length; i++) {
-            if (data[i].name == 'Index') {
+            if (data[i][1] == 'Index') { // 名称
                 continue;
             }
-            if (data[i].href == '') {
+            if (data[i][0] == '') { // url
                 continue;
             }
             let regex = /\//g; //解决特殊字符问题
-            let chapter_name = data[i].name.replace(regex, "_")
+            let chapter_name = data[i][1].replace(regex, "_")
             merger.add("./temp/" + chapter_name + '.pdf');
         }
         await merger.save('./ebooks/' + fileName + '.pdf');
     }
-    getPageCount(arr) {
-        let total = 0;
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i]["children"].length == 0) {
-                total += 1;
-            } else {
-                total += this.getPageCount(arr[i].children);
-            }
-        }
-        return total;
+    // 次序
+    radix(digit) {
+        let n = 0;
+        do {
+            digit = Math.floor(digit / 10);
+            n++;
+        } while (digit > 0);
+        return n;
+    }
+    // 
+    padZero(digit, N) {
+        let n = 0;
+        let tmp = digit;
+        do {
+            tmp = Math.floor(tmp / 10);
+            n++;
+        } while (tmp > 0)
 
+        let str = '';
+        for (let i = (N - n); i < N; i++) {
+            str += '0';
+        }
+        return str + digit;
     }
-    saveCacheFile() {
-        let data = JSON.stringify(this.chapterEntries, null, 4);
-        fs.writeFileSync(this.cacheFile, data);
-        console.log(data);
-    }
-    //解析网站目录
-    async visitEntry(callback) {
-        let that = this;
-        const req = https.get(this.pdfEntry, (res) => {
-            let html = [];
-            let size = 0;
-            res.on('data', (data) => {
-                html.push(data);
-                size += data.length;
-            });
-            res.on("end", function () {
-                let buf = Buffer.concat(html, size);
-                let result = iconv.decode(buf, "utf8");//转码//var result = buff.toString();//不需要转编码,直接tostring
-                if (typeof callback === 'function') {
-                    callback(result, that);
-                }
-            });
-        });
-        req.on('error', (e) => {
-            console.error(e);
-        });
-    }
-    parsePdfEntry(data, that) {
-        let $ = cheerio.load(data);
-        let $container = $(that.css_container);
-        that.visitChildrenNodes(that, $, $container, 0, that.chapterEntries, that);
-    }
-    visitChildrenNodes(root, $, $parent, level, parent, that) {
-        $parent.each((index, item) => {
-            let $a = '';
-            if (level == 0) {
-                $a = $(item).find(that.css_level_one);
-            } else {
-                $a = $(item).is('a') ? $(item) : $(item).find(that.css_level_one);
-            }
-            let _href_ = $a.attr('href');
-            let href = '';
-            if (_href_ != undefined) {
-                if (_href_.substr(0, 4) == 'http') {
-                    href = $a.attr('href');
-                } else {
-                    if (root.rootPrefix !== undefined) {
-                        href = root.rootPrefix + $a.attr('href');
-                    } else {
-                        href = root.pdfEntry + $a.attr('href');
-                    }
-                }
-            }
-            let name = $a.text();
-            let o = { name: name, href: href, level: level, children: [] };
-            let $children = $(item).find(that.css_level_two);
-            if ($children.length) {
-                root.visitChildrenNodes(root, $, $children, level + 1, o.children, that);
-            }
-            parent.push(o);
-        });
+    // 休眠时间
+    sleep(time = 0) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, time);
+        })
     }
 }
 
