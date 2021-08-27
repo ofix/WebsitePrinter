@@ -17,7 +17,7 @@ class WebsitePrinter {
         this.pdf_name = pdf_name; // PDF名称
         this.cacheFile = pdf_name + '.json';
         this.tree = new PageNode(null, this.pdf_name, this.website_root, 0); //层级一
-        this.visited_urls = []; // 已经访问过的URL集合
+        this.visited_urls = {}; // 已经访问过的URL集合
         this.pdf_urls = []; // 需要打印成PDF的URL集合
         this.stack = [];
         ////////////////////////////////////////////
@@ -68,7 +68,7 @@ class WebsitePrinter {
                 let $url = $(url); //只查找当前页面的下一级目录
                 let child_url = that.website_base + $url.attr('href');
                 if (that.isChildUrl(parent_url, child_url)) {
-                    let name = $url.text();
+                    let name = $url.text().trim();
                     let node = new PageNode(name, child_url, level + 1);
                     parent_node.addChild(node);
                 }
@@ -151,7 +151,7 @@ class WebsitePrinter {
                 pdf_urls: this.pdf_urls
             };
             for (let i = 0; i < this.stack.length; i++) { // 生成dump文件
-                o.stack.push([this.stack[i][0], this.stack[i][1], this.stack[2]]);
+                o.stack.push([this.stack[i][0], this.stack[i][1], this.stack[i][2]]);
             }
             o.tree = this.tree;
             let data = JSON.stringify(o, null, 4);
@@ -167,6 +167,20 @@ class WebsitePrinter {
             this.pdf_urls = o.pdf_urls;
             this.stack = o.stack;
             this.tree = o.tree;
+            //深度遍历整个Tree,恢复文件
+            let stack = [this.tree];
+            let j = 0;
+            while (stack.length > 0) {
+                let node = stack.shift();
+                if (node.children.length > 0) {
+                    for (let i = 0; i < node.children.length; i++) {
+                        stack.push(node.children[i]);
+                    }
+                }
+                if (!this.visited_urls.hasOwnProperty(node.url)) {
+                    this.stack[j++][3] = node;
+                }
+            }
         }
     }
 
