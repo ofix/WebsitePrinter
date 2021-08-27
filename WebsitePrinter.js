@@ -217,13 +217,24 @@ class WebsitePrinter {
             }
         }
     }
+    // 
+    filterSpecialChars(str) {
+        let pattern = new RegExp("[\\\\/:*?\".<>|]")
+        let s = "";
+        for (let i = 0; i < str.length; i++) {
+            s = s + str.substr(i, 1).replace(pattern, '');
+        }
+        return s;
+    }
     // 打印单个网页PDF
     async printPage(index, browser, url, filename) {
-        if (fs.existsSync("./temp/" + index + ". " + filename + '.pdf')) {
-            console.log(index + ". 打印 " + filename + ".pdf[已缓存]");
+        //对文件名进行格式化
+        let file_name = this.filterSpecialChars(filename);
+        if (fs.existsSync("./temp/" + index + ". " + file_name + '.pdf')) {
+            console.log(index + ". 打印 " + file_name + ".pdf [已缓存]");
             return 1;
         } else {
-            console.log(index + ". 打印 " + filename + ".pdf");
+            console.log(index + ". 打印 " + file_name + ".pdf");
         }
 
         const page = await browser.newPage();
@@ -241,7 +252,7 @@ class WebsitePrinter {
             }, this.dirty_global_nodes);
         }
         await page.pdf({
-            path: "./temp/" + index + ". " + filename + '.pdf',
+            path: "./temp/" + index + ". " + file_name + '.pdf',
             format: 'A4',
             printBackground: true,
         });
