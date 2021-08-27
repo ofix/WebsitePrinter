@@ -5,7 +5,8 @@ const puppeteer = require('puppeteer-core');
 const cheerio = require('cheerio');
 const PDFMerger = require('pdf-merger-js');
 const process = require('process');
-const chromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+//const chromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const { PageNode } = require('./pageNode');
 const { treeify } = require('./treeify');
 
@@ -20,6 +21,7 @@ class WebsitePrinter {
         this.visited_urls = {}; // 已经访问过的URL集合
         this.pdf_urls = []; // 需要打印成PDF的URL集合
         this.stack = [];
+        this.in_recover = false; //是否是recover模式
         ////////////////////////////////////////////
         this.debug = true;
         this.hasDirtyElement = true;
@@ -113,9 +115,12 @@ class WebsitePrinter {
     async build() {
         // 深度遍历
         try {
-            let count = 0;
-            let level = 0;
-            this.stack = [[this.website_entry, level, this.pdf_name, this.tree]];
+            let count =0;
+            if(this.in_recover){
+                count = this.visited_urls.length;
+            }else{
+                this.stack = [[this.website_entry, 0, this.pdf_name, this.tree]];
+            }           
             while (this.stack.length > 0) {
                 let page = this.stack.shift();
                 let url = page[0];
@@ -145,15 +150,11 @@ class WebsitePrinter {
         catch (e) {
             console.log(e);
             let o = {
-                stack: [],
-                tree: [],
+                stack: this.stack,
+                tree: this.tree,
                 visited_urls: this.visited_urls,
                 pdf_urls: this.pdf_urls
             };
-            for (let i = 0; i < this.stack.length; i++) { // 生成dump文件
-                o.stack.push([this.stack[i][0], this.stack[i][1], this.stack[i][2]]);
-            }
-            o.tree = this.tree;
             let data = JSON.stringify(o, null, 4);
             fs.writeFileSync("./crash.json", data);
         }
@@ -167,27 +168,7 @@ class WebsitePrinter {
             this.pdf_urls = o.pdf_urls;
             this.stack = o.stack;
             this.tree = o.tree;
-            //深度遍历整个Tree,恢复文件
-            let stack = [this.tree];
-            let map = {};
-            for (let i = 0; i < this.stack.length; i++) {
-                map[this.stack[i][0]] = this.stack[i];
-            }
-            while (stack.length > 0) {
-                let node = stack.shift();
-                if (node.children.length > 0) {
-                    for (let i = 0; i < node.children.length; i++) {
-                        stack.push(node.children[i]);
-                    }
-                }
-                if (!this.visited_urls.hasOwnProperty(node.url)) {
-                    if (map.hasOwnProperty(node.url)) {
-                        map[node.url][3] = node;
-                    } else {
-                        console.log("未找到url", node.url);
-                    }
-                }
-            }
+            this.in_recover = true;
         }
     }
 
