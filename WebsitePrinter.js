@@ -105,7 +105,7 @@ class WebsitePrinter {
             await this.printChapters(browser, this.pdf_urls);
             await browser.close();
         }).then(async () => {
-            await this.mergePartPdfFiles(this.pdf_urls, this.pdfName);
+            await this.mergePartPdfFiles(this.pdf_urls, this.pdf_name);
             console.log("完成！ ^_^");
         });
     }
@@ -208,10 +208,8 @@ class WebsitePrinter {
             if (url == '') {
                 continue;
             }
-            let regex = /\//g; //解决特殊字符问题
-            let chapter_name = chapters[i][1].replace(regex, "_");
             let current_chapter = this.padZero((i + 1), chapter_radix);
-            let result = await this.printPage(current_chapter, browser, url, chapter_name);
+            let result = await this.printPage(current_chapter, browser, url, chapters[i][1]);
             if (result == 0) {
                 await this.sleep(1000);
             }
@@ -261,17 +259,15 @@ class WebsitePrinter {
     // 合并PDF
     async mergePartPdfFiles(data, fileName) {
         console.log("\n合并 " + fileName + ".pdf");
-        var merger = new PDFMerger();
-        for (let i = 0; i < data.length; i++) {
-            if (data[i][1] == 'Index') { // 名称
-                continue;
+        let merger = new PDFMerger();
+        let count = data.length;
+        let radix = this.radix(count);
+        for (let i = 0; i < count; i++) {
+            let chapter_name = this.filterSpecialChars(data[i][1]);
+            let pdf = "./temp/" + this.padZero((i + 1), radix) + ". " + chapter_name + '.pdf';
+            if (fs.existsSync(pdf)) {
+                merger.add(pdf);
             }
-            if (data[i][0] == '') { // url
-                continue;
-            }
-            let regex = /\//g; //解决特殊字符问题
-            let chapter_name = data[i][1].replace(regex, "_")
-            merger.add("./temp/" + chapter_name + '.pdf');
         }
         await merger.save('./ebooks/' + fileName + '.pdf');
     }
