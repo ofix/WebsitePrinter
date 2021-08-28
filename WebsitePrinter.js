@@ -9,19 +9,24 @@ const process = require('process');
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const { PageNode } = require('./pageNode');
 const { treeify } = require('./treeify');
-
+const path = require("path");
+const { PerformanceNodeTiming } = require('perf_hooks');
 class WebsitePrinter {
     constructor(website_entry, pdf_name, website_base) {
         this.website_entry = website_entry; //网站根目录
         this.website_base = website_base;
         this.base_len = this.website_base.length;
         this.pdf_name = pdf_name; // PDF名称
-        this.cacheFile = pdf_name + '.json';
         this.tree = new PageNode(null, this.pdf_name, this.website_root, 0); //层级一
         this.visited_urls = {}; // 已经访问过的URL集合
         this.pdf_urls = []; // 需要打印成PDF的URL集合
         this.stack = [];
         this.in_recover = false; //是否是recover模式
+        this.dir_temp = './temp/' + pdf_name + '/';
+        this.dir_meta = "./meta/" + pdf_name + '/';
+        this.cacheFile = "./meta/" + pdf_name + '/cache.json';
+        this.mkdirs(this.dir_temp);
+        this.mkdirs(this.dir_meta);
         ////////////////////////////////////////////
         this.debug = true;
         this.hasDirtyElement = true;
@@ -96,6 +101,16 @@ class WebsitePrinter {
             this.pdf_urls = JSON.parse(data);
         } else {
             this.recoverFromCrash();
+            let that = this;
+            process.on('SIGINT', function () {
+                console.log('>>>>>>> dump meta data <<<<<<<');;
+                that.saveMetaFile(that.dir_meta + "crash.json");
+                process.exit();
+            });
+            process.on('uncaughtException', function (err) {
+                console.log('++++++++ caught exception: ' + err + " ++++++++");
+                that.saveMetaFile(that.dir_meta + "crash.json");
+            });
             await this.build();
             return;
         }
@@ -115,12 +130,12 @@ class WebsitePrinter {
     async build() {
         // 深度遍历
         try {
-            let count =0;
-            if(this.in_recover){
-                count = this.visited_urls.length;
-            }else{
+            let count = 0;
+            if (this.in_recover) {
+                count = this.pdf_urls.length;
+            } else {
                 this.stack = [[this.website_entry, 0, this.pdf_name, this.tree]];
-            }           
+            }
             while (this.stack.length > 0) {
                 let page = this.stack.shift();
                 let url = page[0];
@@ -145,24 +160,29 @@ class WebsitePrinter {
                 }
                 count++;
             }
-            this.saveCacheFile(this.visited_urls);
+            this.saveMetaFile(this.dir_meta + "meta.json");
+            this.saveCacheFile(this.tree);
         }
         catch (e) {
             console.log(e);
-            let o = {
-                stack: this.stack,
-                tree: this.tree,
-                visited_urls: this.visited_urls,
-                pdf_urls: this.pdf_urls
-            };
-            let data = JSON.stringify(o, null, 4);
-            fs.writeFileSync("./crash.json", data);
+            this.saveMetaFile(this.dir_meta + "crash.json");
         }
     }
 
+    saveMetaFile(file_name) {
+        let o = {
+            stack: this.stack,
+            tree: this.tree,
+            visited_urls: this.visited_urls,
+            pdf_urls: this.pdf_urls
+        };
+        let data = JSON.stringify(o, null, 4);
+        fs.writeFileSync(file_name, data);
+    }
+
     recoverFromCrash() {
-        if (fs.existsSync("./crash.json")) {
-            let data = fs.readFileSync("./crash.json", 'utf-8');
+        if (fs.existsSync(this.dir_meta + "crash.json")) {
+            let data = fs.readFileSync(this.dir_meta + "crash.json", 'utf-8');
             let o = JSON.parse(data);
             this.visited_urls = o.visited_urls;
             this.pdf_urls = o.pdf_urls;
@@ -172,14 +192,38 @@ class WebsitePrinter {
         }
     }
 
-    saveCacheFile(urls) {
+    saveCacheFile(tree) {
+        //树的遍历
+        let arr = this.treeToArray(tree, []);
         let print_urls = [];
-        for (let key in urls) {
-            print_urls.push([key, urls[key]]); // url,name
+        for (let i = 0; i < arr.length; i++) {
+            print_urls.push([arr[i].url, arr[i].name, arr[i].level]); // url,name
         }
         let data = JSON.stringify(print_urls, null, 4);
         fs.writeFileSync(this.cacheFile, data);
     }
+
+    treeToArray(root, arr) {
+        if (root != null) {
+            arr.push({ url: root.url, name: root.name, level: root.level });
+            let child_nodes = root.getChildren();
+            for (let i = 0; i < child_nodes.length; i++) {
+                this.treeToArray(child_nodes[i], arr);
+            }
+        }
+        return arr;
+    }
+
+    mkdirs(dirname) {
+        if (fs.existsSync(dirname)) {
+            return true;
+        } else {
+            if (this.mkdirs(path.dirname(dirname))) {
+                fs.mkdirSync(dirname);
+                return true;
+            }
+        }
+    };
 
     async printChapters(browser, chapters) {
         let chapter_length = chapters.length;
@@ -192,7 +236,7 @@ class WebsitePrinter {
             let current_chapter = this.padZero((i + 1), chapter_radix);
             let result = await this.printPage(current_chapter, browser, url, chapters[i][1]);
             if (result == 0) {
-                await this.sleep(1000);
+                await this.sleep(100);
             }
         }
     }
@@ -209,7 +253,7 @@ class WebsitePrinter {
     async printPage(index, browser, url, filename) {
         //对文件名进行格式化
         let file_name = this.filterSpecialChars(filename);
-        if (fs.existsSync("./temp/" + index + ". " + file_name + '.pdf')) {
+        if (fs.existsSync(this.dir_temp + index + ". " + file_name + '.pdf')) {
             console.log(index + ". 打印 " + file_name + ".pdf [已缓存]");
             return 1;
         } else {
@@ -231,7 +275,7 @@ class WebsitePrinter {
             }, this.dirty_global_nodes);
         }
         await page.pdf({
-            path: "./temp/" + index + ". " + file_name + '.pdf',
+            path: this.dir_temp + index + ". " + file_name + '.pdf',
             format: 'A4',
             printBackground: true,
         });
@@ -245,7 +289,7 @@ class WebsitePrinter {
         let radix = this.radix(count);
         for (let i = 0; i < count; i++) {
             let chapter_name = this.filterSpecialChars(data[i][1]);
-            let pdf = "./temp/" + this.padZero((i + 1), radix) + ". " + chapter_name + '.pdf';
+            let pdf = this.dir_temp + this.padZero((i + 1), radix) + ". " + chapter_name + '.pdf';
             if (fs.existsSync(pdf)) {
                 merger.add(pdf);
             }
