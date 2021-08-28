@@ -51,6 +51,7 @@ typings/
 .npm
 
 temp
+ebooks
 
 # Optional eslint cache
 .eslintcache
