@@ -29,7 +29,7 @@ class WebsitePrinter {
         this.mkdirs(this.dir_meta);
         ////////////////////////////////////////////
         this.debug = true;
-        this.hasDirtyElement = true;
+        this.hasDirtyElement = false;
         this.visible_node = "";
         this.invisible_node_children = [];
         this.dirty_global_nodes = [];
@@ -42,6 +42,9 @@ class WebsitePrinter {
     }
     setDirtyGlobalNodes(dirty_global_nodes) {
         this.dirty_global_nodes = dirty_global_nodes;
+        if (this.dirty_global_nodes.length > 0) {
+            this.hasDirtyElement = true;
+        }
     }
     // 访问单个页面
     async visitUrl(url, count) {
@@ -74,10 +77,12 @@ class WebsitePrinter {
             $a.each((sub_index, url) => {
                 let $url = $(url); //只查找当前页面的下一级目录
                 let child_url = that.website_base + $url.attr('href');
-                if (that.isChildUrl(parent_url, child_url)) {
-                    let name = $url.text().trim();
-                    let node = new PageNode(name, child_url, level + 1);
-                    parent_node.addChild(node);
+                if (child_url.indexOf('#') == -1) {
+                    if (that.isChildUrl(parent_url, child_url)) {
+                        let name = $url.text().trim();
+                        let node = new PageNode(name, child_url, level + 1);
+                        parent_node.addChild(node);
+                    }
                 }
             });
         });
@@ -104,7 +109,7 @@ class WebsitePrinter {
             let that = this;
             process.on('SIGINT', function () {
                 console.log('>>>>>>> dump meta data <<<<<<<');;
-                that.saveMetaFile(that.dir_meta + "crash.json");
+                that.saveMetaFile(that.dir_meta + "_crash_.json");
                 process.exit();
             });
             process.on('uncaughtException', function (err) {

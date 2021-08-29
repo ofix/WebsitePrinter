@@ -1,0 +1,767 @@
+{
+    "stack": [],
+    "tree": {
+        "name": null,
+        "url": "Node.js-v13.x",
+        "children": [
+            {
+                "name": "About these Docs",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/documentation.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Usage & Example",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/synopsis.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Assertion Testing",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/assert.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Async Hooks",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/async_hooks.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Buffer",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/buffer.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "C++ Addons",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/addons.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "C/C++ Addons with N-API",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/n-api.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Child Processes",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/child_process.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Cluster",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/cluster.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Command Line Options",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/cli.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Console",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/console.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Crypto",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/crypto.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Debugger",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/debugger.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Deprecated APIs",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/deprecations.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "DNS",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/dns.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Domain",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/domain.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "ECMAScript Modules",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/esm.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Errors",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/errors.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Events",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/events.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "File System",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/fs.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Globals",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/globals.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "HTTP",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/http.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "HTTP/2",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/http2.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "HTTPS",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/https.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Inspector",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/inspector.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Internationalization",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/intl.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Modules",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/modules.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Net",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/net.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "OS",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/os.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Path",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/path.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Performance Hooks",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/perf_hooks.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Policies",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/policy.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Process",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/process.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Punycode",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/punycode.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Query Strings",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/querystring.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Readline",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/readline.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "REPL",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/repl.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Report",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/report.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Stream",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/stream.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "String Decoder",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/string_decoder.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Timers",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/timers.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "TLS/SSL",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/tls.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Trace Events",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/tracing.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "TTY",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/tty.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "UDP/Datagram",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/dgram.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "URL",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/url.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Utilities",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/util.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "V8",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/v8.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "VM",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/vm.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "WASI",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/wasi.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Worker Threads",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/worker_threads.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Zlib",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/zlib.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Index",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/index.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "View on single page",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/all.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "View as JSON",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/index.json",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "About these Docs",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/documentation.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Usage & Example",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/synopsis.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Assertion Testing",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/assert.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Async Hooks",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/async_hooks.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Buffer",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/buffer.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "C++ Addons",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/addons.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "C/C++ Addons with N-API",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/n-api.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Child Processes",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/child_process.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Cluster",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/cluster.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Command Line Options",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/cli.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Console",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/console.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Crypto",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/crypto.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Debugger",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/debugger.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Deprecated APIs",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/deprecations.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "DNS",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/dns.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Domain",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/domain.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "ECMAScript Modules",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/esm.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Errors",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/errors.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Events",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/events.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "File System",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/fs.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Globals",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/globals.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "HTTP",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/http.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "HTTP/2",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/http2.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "HTTPS",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/https.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Inspector",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/inspector.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Internationalization",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/intl.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Modules",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/modules.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Net",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/net.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "OS",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/os.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Path",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/path.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Performance Hooks",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/perf_hooks.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Policies",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/policy.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Process",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/process.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Punycode",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/punycode.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Query Strings",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/querystring.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Readline",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/readline.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "REPL",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/repl.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Report",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/report.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Stream",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/stream.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "String Decoder",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/string_decoder.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Timers",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/timers.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "TLS/SSL",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/tls.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Trace Events",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/tracing.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "TTY",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/tty.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "UDP/Datagram",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/dgram.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "URL",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/url.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Utilities",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/util.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "V8",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/v8.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "VM",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/vm.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "WASI",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/wasi.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Worker Threads",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/worker_threads.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Zlib",
+                "url": "https://nodejs.org/docs/latest-v13.x/api/zlib.html",
+                "level": 1,
+                "children": []
+            }
+        ]
+    },
+    "visited_urls": {
+        "https://nodejs.org/docs/latest-v13.x/api/": "Node.js-v13.x",
+        "https://nodejs.org/docs/latest-v13.x/api/documentation.html": "About these Docs",
+        "https://nodejs.org/docs/latest-v13.x/api/synopsis.html": "Usage & Example",
+        "https://nodejs.org/docs/latest-v13.x/api/assert.html": "Assertion Testing",
+        "https://nodejs.org/docs/latest-v13.x/api/async_hooks.html": "Async Hooks",
+        "https://nodejs.org/docs/latest-v13.x/api/buffer.html": "Buffer",
+        "https://nodejs.org/docs/latest-v13.x/api/addons.html": "C++ Addons",
+        "https://nodejs.org/docs/latest-v13.x/api/n-api.html": "C/C++ Addons with N-API",
+        "https://nodejs.org/docs/latest-v13.x/api/child_process.html": "Child Processes",
+        "https://nodejs.org/docs/latest-v13.x/api/cluster.html": "Cluster",
+        "https://nodejs.org/docs/latest-v13.x/api/cli.html": "Command Line Options",
+        "https://nodejs.org/docs/latest-v13.x/api/console.html": "Console",
+        "https://nodejs.org/docs/latest-v13.x/api/crypto.html": "Crypto",
+        "https://nodejs.org/docs/latest-v13.x/api/debugger.html": "Debugger",
+        "https://nodejs.org/docs/latest-v13.x/api/deprecations.html": "Deprecated APIs",
+        "https://nodejs.org/docs/latest-v13.x/api/dns.html": "DNS",
+        "https://nodejs.org/docs/latest-v13.x/api/domain.html": "Domain",
+        "https://nodejs.org/docs/latest-v13.x/api/esm.html": "ECMAScript Modules",
+        "https://nodejs.org/docs/latest-v13.x/api/errors.html": "Errors",
+        "https://nodejs.org/docs/latest-v13.x/api/events.html": "Events",
+        "https://nodejs.org/docs/latest-v13.x/api/fs.html": "File System",
+        "https://nodejs.org/docs/latest-v13.x/api/globals.html": "Globals",
+        "https://nodejs.org/docs/latest-v13.x/api/http.html": "HTTP",
+        "https://nodejs.org/docs/latest-v13.x/api/http2.html": "HTTP/2",
+        "https://nodejs.org/docs/latest-v13.x/api/https.html": "HTTPS",
+        "https://nodejs.org/docs/latest-v13.x/api/inspector.html": "Inspector",
+        "https://nodejs.org/docs/latest-v13.x/api/intl.html": "Internationalization",
+        "https://nodejs.org/docs/latest-v13.x/api/modules.html": "Modules",
+        "https://nodejs.org/docs/latest-v13.x/api/net.html": "Net",
+        "https://nodejs.org/docs/latest-v13.x/api/os.html": "OS",
+        "https://nodejs.org/docs/latest-v13.x/api/path.html": "Path",
+        "https://nodejs.org/docs/latest-v13.x/api/perf_hooks.html": "Performance Hooks",
+        "https://nodejs.org/docs/latest-v13.x/api/policy.html": "Policies",
+        "https://nodejs.org/docs/latest-v13.x/api/process.html": "Process",
+        "https://nodejs.org/docs/latest-v13.x/api/punycode.html": "Punycode",
+        "https://nodejs.org/docs/latest-v13.x/api/querystring.html": "Query Strings",
+        "https://nodejs.org/docs/latest-v13.x/api/readline.html": "Readline",
+        "https://nodejs.org/docs/latest-v13.x/api/repl.html": "REPL",
+        "https://nodejs.org/docs/latest-v13.x/api/report.html": "Report",
+        "https://nodejs.org/docs/latest-v13.x/api/stream.html": "Stream",
+        "https://nodejs.org/docs/latest-v13.x/api/string_decoder.html": "String Decoder",
+        "https://nodejs.org/docs/latest-v13.x/api/timers.html": "Timers",
+        "https://nodejs.org/docs/latest-v13.x/api/tls.html": "TLS/SSL",
+        "https://nodejs.org/docs/latest-v13.x/api/tracing.html": "Trace Events",
+        "https://nodejs.org/docs/latest-v13.x/api/tty.html": "TTY",
+        "https://nodejs.org/docs/latest-v13.x/api/dgram.html": "UDP/Datagram",
+        "https://nodejs.org/docs/latest-v13.x/api/url.html": "URL",
+        "https://nodejs.org/docs/latest-v13.x/api/util.html": "Utilities",
+        "https://nodejs.org/docs/latest-v13.x/api/v8.html": "V8",
+        "https://nodejs.org/docs/latest-v13.x/api/vm.html": "VM",
+        "https://nodejs.org/docs/latest-v13.x/api/wasi.html": "WASI",
+        "https://nodejs.org/docs/latest-v13.x/api/worker_threads.html": "Worker Threads",
+        "https://nodejs.org/docs/latest-v13.x/api/zlib.html": "Zlib",
+        "https://nodejs.org/docs/latest-v13.x/api/index.html": "Index",
+        "https://nodejs.org/docs/latest-v13.x/api/all.html": "View on single page",
+        "https://nodejs.org/docs/latest-v13.x/api/index.json": "View as JSON"
+    },
+    "pdf_urls": [
+        "https://nodejs.org/docs/latest-v13.x/api/",
+        "https://nodejs.org/docs/latest-v13.x/api/documentation.html",
+        "https://nodejs.org/docs/latest-v13.x/api/synopsis.html",
+        "https://nodejs.org/docs/latest-v13.x/api/assert.html",
+        "https://nodejs.org/docs/latest-v13.x/api/async_hooks.html",
+        "https://nodejs.org/docs/latest-v13.x/api/buffer.html",
+        "https://nodejs.org/docs/latest-v13.x/api/addons.html",
+        "https://nodejs.org/docs/latest-v13.x/api/n-api.html",
+        "https://nodejs.org/docs/latest-v13.x/api/child_process.html",
+        "https://nodejs.org/docs/latest-v13.x/api/cluster.html",
+        "https://nodejs.org/docs/latest-v13.x/api/cli.html",
+        "https://nodejs.org/docs/latest-v13.x/api/console.html",
+        "https://nodejs.org/docs/latest-v13.x/api/crypto.html",
+        "https://nodejs.org/docs/latest-v13.x/api/debugger.html",
+        "https://nodejs.org/docs/latest-v13.x/api/deprecations.html",
+        "https://nodejs.org/docs/latest-v13.x/api/dns.html",
+        "https://nodejs.org/docs/latest-v13.x/api/domain.html",
+        "https://nodejs.org/docs/latest-v13.x/api/esm.html",
+        "https://nodejs.org/docs/latest-v13.x/api/errors.html",
+        "https://nodejs.org/docs/latest-v13.x/api/events.html",
+        "https://nodejs.org/docs/latest-v13.x/api/fs.html",
+        "https://nodejs.org/docs/latest-v13.x/api/globals.html",
+        "https://nodejs.org/docs/latest-v13.x/api/http.html",
+        "https://nodejs.org/docs/latest-v13.x/api/http2.html",
+        "https://nodejs.org/docs/latest-v13.x/api/https.html",
+        "https://nodejs.org/docs/latest-v13.x/api/inspector.html",
+        "https://nodejs.org/docs/latest-v13.x/api/intl.html",
+        "https://nodejs.org/docs/latest-v13.x/api/modules.html",
+        "https://nodejs.org/docs/latest-v13.x/api/net.html",
+        "https://nodejs.org/docs/latest-v13.x/api/os.html",
+        "https://nodejs.org/docs/latest-v13.x/api/path.html",
+        "https://nodejs.org/docs/latest-v13.x/api/perf_hooks.html",
+        "https://nodejs.org/docs/latest-v13.x/api/policy.html",
+        "https://nodejs.org/docs/latest-v13.x/api/process.html",
+        "https://nodejs.org/docs/latest-v13.x/api/punycode.html",
+        "https://nodejs.org/docs/latest-v13.x/api/querystring.html",
+        "https://nodejs.org/docs/latest-v13.x/api/readline.html",
+        "https://nodejs.org/docs/latest-v13.x/api/repl.html",
+        "https://nodejs.org/docs/latest-v13.x/api/report.html",
+        "https://nodejs.org/docs/latest-v13.x/api/stream.html",
+        "https://nodejs.org/docs/latest-v13.x/api/string_decoder.html",
+        "https://nodejs.org/docs/latest-v13.x/api/timers.html",
+        "https://nodejs.org/docs/latest-v13.x/api/tls.html",
+        "https://nodejs.org/docs/latest-v13.x/api/tracing.html",
+        "https://nodejs.org/docs/latest-v13.x/api/tty.html",
+        "https://nodejs.org/docs/latest-v13.x/api/dgram.html",
+        "https://nodejs.org/docs/latest-v13.x/api/url.html",
+        "https://nodejs.org/docs/latest-v13.x/api/util.html",
+        "https://nodejs.org/docs/latest-v13.x/api/v8.html",
+        "https://nodejs.org/docs/latest-v13.x/api/vm.html",
+        "https://nodejs.org/docs/latest-v13.x/api/wasi.html",
+        "https://nodejs.org/docs/latest-v13.x/api/worker_threads.html",
+        "https://nodejs.org/docs/latest-v13.x/api/zlib.html",
+        "https://nodejs.org/docs/latest-v13.x/api/index.html",
+        "https://nodejs.org/docs/latest-v13.x/api/all.html",
+        "https://nodejs.org/docs/latest-v13.x/api/index.json"
+    ]
+}

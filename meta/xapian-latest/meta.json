@@ -1,0 +1,77 @@
+{
+    "stack": [],
+    "tree": {
+        "name": null,
+        "url": "xapian-latest",
+        "children": [
+            {
+                "name": "Introduction",
+                "url": "https://getting-started-with-xapian.readthedocs.io/en/latest/overview.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Python Specific Notes",
+                "url": "https://getting-started-with-xapian.readthedocs.io/en/latest/language_specific.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Glossary",
+                "url": "https://getting-started-with-xapian.readthedocs.io/en/latest/glossary.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "License and authors",
+                "url": "https://getting-started-with-xapian.readthedocs.io/en/latest/LICENSE.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Introduction",
+                "url": "https://getting-started-with-xapian.readthedocs.io/en/latest/overview.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Python Specific Notes",
+                "url": "https://getting-started-with-xapian.readthedocs.io/en/latest/language_specific.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Glossary",
+                "url": "https://getting-started-with-xapian.readthedocs.io/en/latest/glossary.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "License and authors",
+                "url": "https://getting-started-with-xapian.readthedocs.io/en/latest/LICENSE.html",
+                "level": 1,
+                "children": []
+            },
+            {
+                "name": "Next",
+                "url": "https://getting-started-with-xapian.readthedocs.io/en/latest/overview.html",
+                "level": 1,
+                "children": []
+            }
+        ]
+    },
+    "visited_urls": {
+        "https://getting-started-with-xapian.readthedocs.io/en/latest/": "xapian-latest",
+        "https://getting-started-with-xapian.readthedocs.io/en/latest/overview.html": "Introduction",
+        "https://getting-started-with-xapian.readthedocs.io/en/latest/language_specific.html": "Python Specific Notes",
+        "https://getting-started-with-xapian.readthedocs.io/en/latest/glossary.html": "Glossary",
+        "https://getting-started-with-xapian.readthedocs.io/en/latest/LICENSE.html": "License and authors"
+    },
+    "pdf_urls": [
+        "https://getting-started-with-xapian.readthedocs.io/en/latest/",
+        "https://getting-started-with-xapian.readthedocs.io/en/latest/overview.html",
+        "https://getting-started-with-xapian.readthedocs.io/en/latest/language_specific.html",
+        "https://getting-started-with-xapian.readthedocs.io/en/latest/glossary.html",
+        "https://getting-started-with-xapian.readthedocs.io/en/latest/LICENSE.html"
+    ]
+}
